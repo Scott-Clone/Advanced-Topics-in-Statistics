@@ -1,0 +1,114 @@
+
+
+#
+# Newton R
+# Topics in Statistics
+#
+
+newton <- function(a, b, func, funcPrime, step_size=1, precision=0.0001) { 
+  
+  # Logical checks 
+  stopifnot(is.numeric(step_size))
+  stopifnot(is.numeric(precision))
+  stopifnot(is.function(func))
+  stopifnot(is.function(funcPrime))
+  stopifnot(is.numeric(a))
+  stopifnot(is.numeric(b))
+  stopifnot(b > a)
+  
+  func0 <- func(a)
+  n <- 0
+  roots <- b+1
+  roots[1] <- b+1
+  
+#USe our line search function to search for feasable reagion and then use newton method 
+
+  for(j in seq(a + step_size, b, by = step_size)) {
+    if(func(j) * func0 <= 0) { 
+     
+       x0 <- j
+      x1 <- j - step_size
+      test <- b+1
+#Evaluate roots for chosen regions
+      if (abs(funcPrime(x0)) > precision) {
+        if (x1 < (x0 -(func(x0)/funcPrime(x0)))) {
+          if (x0 >= (x0 -(func(x0)/funcPrime(x0)))) {
+            test <- x0
+          }    
+        }
+      }
+      if (test == b+1) {
+        if (abs(funcPrime(x1)) > precision) {
+          if (x1 <= (x1-(func(x1)/funcPrime(x1)))) {
+            if (x0 > (x1-(func(x1)/funcPrime(x1)))) {
+              print(x1-(func(x1)/funcPrime(x1)))
+              test <- x1
+            }
+          }
+        }
+      }
+     
+      else {
+        while (abs(func(test)) >= precision) {
+          test <- test - (func(test)/funcPrime(test))
+        }
+        n <- n+1
+        roots[n] <- test
+        
+        if (abs(func(x1)) < precision) {
+          n <- n-1
+          print(x1)
+        }
+      }
+    }
+    func0 <- func(j)
+  }
+  if ( roots[1] == b+1 ) {
+    return ("No Roots exists in the domain")
+  }
+  else {
+    return (roots[1:n])
+  }
+}
+
+#
+#Test 1
+#
+
+func <- function(x) { x^2 + 5*x +6 }
+funcPrime <- function(x) { 2*x + 5 }
+roots <- newton(-5, 5, func, funcPrime) #need to define the domain
+
+
+#
+# TEst 2
+#
+
+func <- function(x) { x^2 - 2}
+funcPrime <- function(x) { 2*x}
+roots <- newton(-2, 2, func, funcPrime)
+
+#look at plot
+x <- seq(-3,3, 0.01) 
+func <- { x^2 - 2}
+plot(x,func,type="l",ylab="y", col="blue")
+funcPrime <- {2*x}
+lines(x,funcPrime,col="green")
+
+#
+#Test 3
+#
+func <- function(x) { x^2+1}
+funcPrime <- function(x) { 2*x}
+roots <- newton(-5, 5, func, funcPrime)
+roots
+# Look at plot
+x <- seq(-5,5, 0.01) 
+func <- { x^2+1}
+plot(x,func,type="l",ylab="y", col="blue")
+funcPrime <- {2*x}
+lines(x,funcPrime,col="green")
+
+
+
+
