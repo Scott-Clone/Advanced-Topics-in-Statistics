@@ -81,7 +81,7 @@ roots <- newton(-5, 5, func, funcPrime) #need to define the domain
 
 
 #
-# TEst 2
+# Test Cases
 #
 
 func <- function(x) { x^2 - 2}
