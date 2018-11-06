@@ -3,7 +3,7 @@
 # Carlone Scott
 # Newton R
 # Topics in Statistics
-#
+# This function takes ....
 
 newton <- function(a, b, func, funcPrime, step_size=1, precision=0.0001) { 
   
