@@ -2,7 +2,7 @@
 
 # Carlone Scott
 # Newton Rampson
-# Topics in Statistics
+# Topics in Statistics (Optimization)
 # This function takes ....
 
 newton <- function(a, b, func, funcPrime, step_size=1, precision=0.0001) { 
